@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Personal Chef</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<section id="welcome" class="screen">
+
+
+<h1>
+👨‍🍳 My Personal Chef
+</h1>
+
+
+<h2>
+Cocina inteligente para la vida real
+</h2>
+
+
+<p>
+Tu asistente personal para organizar comidas,
+ahorrar dinero y cocinar mejor.
+</p>
+
+
+<button onclick="startSetup()">
+Comenzar
+</button>
+
+
+</section>
+
+
+
+
+<section id="setup" class="screen hidden">
+
+
+<h2>
+Configuremos tu hogar
+</h2>
+
+
+<label>
+¿Cómo te llamas?
+</label>
+
+<input 
+id="userName"
+type="text"
+placeholder="Nombre">
+
+
+<label>
+¿Cuántas personas viven en tu hogar?
+</label>
+
+
+<select id="familyMembers">
+
+<option value="1">
+1 persona
+</option>
+
+<option value="2">
+2 personas
+</option>
+
+<option value="3">
+3 personas
+</option>
+
+<option value="4">
+4 personas
+</option>
+
+<option value="5">
+5 personas
+</option>
+
+<option value="6">
+Más de 5 personas
+</option>
+
+
+</select>
+
+
+
+<label>
+Tipo de alimentación
+</label>
+
+
+<select id="diet">
+
+<option>
+Sin restricciones
+</option>
+
+<option>
+Vegetariano
+</option>
+
+<option>
+Vegano
+</option>
+
+<option>
+Sin gluten
+</option>
+
+<option>
+Sin lactosa
+</option>
+
+<option>
+Keto
+</option>
+
+<option>
+Alto en proteínas
+</option>
+
+</select>
+
+
+
+<button onclick="saveProfile()">
+Guardar configuración
+</button>
+
+
+</section>
+
+
+
+
+
+<section id="dashboard" class="screen hidden">
+
+
+<h1>
+Bienvenido 👋
+<span id="displayName"></span>
+</h1>
+
+
+
+<div class="cards">
+
+
+<div class="card">
+🍲
+<h3>
+Recetas
+</h3>
+<p>
+Encuentra ideas para cocinar.
+</p>
+</div>
+
+
+
+<div class="card">
+🤖
+<h3>
+Chef IA
+</h3>
+<p>
+Pregúntame qué preparar.
+</p>
+</div>
+
+
+
+
+<div class="card">
+🛒
+<h3>
+Lista de compras
+</h3>
+<p>
+Organiza tus compras.
+</p>
+</div>
+
+
+
+
+<div class="card">
+📅
+<h3>
+Menú semanal
+</h3>
+<p>
+Planifica tus comidas.
+</p>
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+</div>
+
+
+<script src="js/app.js"></script>
+
+
+</body>
+
+</html>
