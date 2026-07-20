@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Personal Chef</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== PANTALLA INICIAL — foto real de cocina ===== -->
+<div id="screen-lang">
+  <div class="lang-bg">
+    <!-- Foto real de cocina — Unsplash libre de derechos -->
+    <img class="lang-bg-img"
+      src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80"
+      alt="Modern kitchen with fresh ingredients">
+    <div class="lang-bg-overlay"></div>
+  </div>
+  <div class="lang-content">
+    <div class="lang-hero">
+      <!-- Sombrero de chef REAL — toque profesional blanco -->
+      <div class="chef-hat-wrap">
+        <img class="chef-hat-img"
+          src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=400&q=90&fit=crop&crop=top"
+          alt="Professional white chef toque"
+          onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=400&q=85&fit=crop'">
+      </div>
+      <h1 class="brand-title">My Personal Chef</h1>
+      <p class="brand-tagline">Your intelligent kitchen assistant</p>
+    </div>
+    <div class="lang-box">
+      <p class="lang-prompt">Choose your language</p>
+      <div class="lang-grid">
+        <button class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+        <button class="lang-btn" onclick="setLang('en')">🇺🇸 English</button>
+        <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+        <button class="lang-btn" onclick="setLang('pt')">🇧🇷 Português</button>
+        <button class="lang-btn" onclick="setLang('de')">🇩🇪 Deutsch</button>
+        <button class="lang-btn" onclick="setLang('it')">🇮🇹 Italiano</button>
+        <button class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</button>
+        <button class="lang-btn" onclick="setLang('ja')">🇯🇵 日本語</button>
+        <button class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</button>
+        <button class="lang-btn" onclick="setLang('ko')">🇰🇷 한국어</button>
+      </div>
+      <!-- Acceso de prueba / Admin -->
+      <div class="demo-access">
+        <div class="demo-divider"><span>— or —</span></div>
+        <button class="demo-btn" onclick="enterDemoMode()">
+          🔑 Demo / Admin access
+        </button>
+        <p class="demo-hint">admin@mypersonalchef.app · demo1234</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN / REGISTER ===== -->
+<div id="screen-auth" class="oculto">
+  <div class="auth-bg">
+    <img class="auth-bg-img"
+      src="https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=1200&q=80"
+      alt="Fresh ingredients on white counter">
+    <div class="auth-bg-overlay"></div>
+  </div>
+  <div class="auth-wrap">
+    <div class="auth-logo">
+      <div class="auth-chef-icon">👨‍🍳</div>
+      <h1 class="brand-title-sm">My Personal Chef</h1>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab activo" id="tab-login" onclick="switchAuth('login')" data-i="login">Sign in</button>
+      <button class="auth-tab" id="tab-register" onclick="switchAuth('register')" data-i="register">Sign up</button>
+    </div>
+    <div class="auth-box" id="box-login">
+      <div class="form-group"><label data-i="email">Email</label><input type="email" id="loginEmail" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="form-group"><label data-i="password">Password</label>
+        <div class="pass-wrap"><input type="password" id="loginPass" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"><button class="toggle-pass" onclick="togglePass('loginPass',this)" type="button">👁</button></div>
+      </div>
+      <button class="btn btn-full" onclick="doLogin()" data-i="signin">Sign in</button>
+      <button class="btn-link" onclick="switchAuth('register')" data-i="noAccount">Don't have an account? Sign up</button>
+    </div>
+    <div class="auth-box oculto" id="box-register">
+      <div class="form-group"><label data-i="name">Your name</label><input type="text" id="regName" placeholder="Chef Maria" autocomplete="name"></div>
+      <div class="form-group"><label data-i="email">Email</label><input type="email" id="regEmail" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="form-group"><label data-i="password">Password</label>
+        <div class="pass-wrap"><input type="password" id="regPass" autocomplete="new-password"><button class="toggle-pass" onclick="togglePass('regPass',this)" type="button">👁</button></div>
+      </div>
+      <button class="btn btn-full" onclick="doRegister()" data-i="createAccount">Create account</button>
+      <button class="btn-link" onclick="switchAuth('login')" data-i="haveAccount">Already have an account? Sign in</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ONBOARDING (5 pasos) ===== -->
+<div id="screen-onboarding" class="oculto">
+  <div class="onboard-wrap">
+    <div class="onboard-progress">
+      <div class="onboard-bar"><div class="onboard-fill" id="onboardFill"></div></div>
+      <span id="onboardStep" class="onboard-step-label">1 / 5</span>
+    </div>
+
+    <!-- PASO 1: Familia -->
+    <div class="onboard-step activa" id="step1">
+      <div class="onboard-icon">👨‍👩‍👧‍👦</div>
+      <h2 class="onboard-title" data-i="step1Title">Your household</h2>
+      <p class="onboard-sub" data-i="step1Sub">We'll plan meals for your whole family</p>
+      <div class="form-group">
+        <label data-i="yourName">Your name</label>
+        <input type="text" id="ob_name" placeholder="Alfredo">
+      </div>
+      <div class="form-group">
+        <label data-i="adults">Adults</label>
+        <div class="counter-wrap">
+          <button class="counter-btn" onclick="changeCount('adults',-1)">−</button>
+          <span id="adults-val">2</span>
+          <button class="counter-btn" onclick="changeCount('adults',1)">+</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label data-i="children">Children</label>
+        <div class="counter-wrap">
+          <button class="counter-btn" onclick="changeCount('children',-1)">−</button>
+          <span id="children-val">0</span>
+          <button class="counter-btn" onclick="changeCount('children',1)">+</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label data-i="country">Country / Region</label>
+        <input type="text" id="ob_country" placeholder="Canada">
+      </div>
+      <button class="btn btn-full" onclick="nextStep(2)" data-i="next">Next →</button>
+    </div>
+
+    <!-- PASO 2: Presupuesto y ahorro -->
+    <div class="onboard-step" id="step2">
+      <div class="onboard-icon">💵</div>
+      <h2 class="onboard-title" data-i="step2Title">Your food budget</h2>
+      <p class="onboard-sub" data-i="step2Sub">We'll suggest recipes that fit your budget</p>
+      <div class="form-group">
+        <label data-i="weeklyBudget">Weekly grocery budget ($)</label>
+        <input type="number" id="ob_budget" placeholder="150" min="1">
+      </div>
+      <div class="form-group">
+        <label data-i="savingsGoal">Weekly savings goal (optional, $)</label>
+        <input type="number" id="ob_savings" placeholder="20" min="0">
+      </div>
+      <div class="form-group">
+        <label data-i="mealBudget">Budget per meal ($)</label>
+        <input type="number" id="ob_mealbudget" placeholder="15" min="1">
+      </div>
+      <div class="budget-tip">
+        <span>💡</span>
+        <span data-i="budgetTip">The AI will always suggest the most economical options that fit your family size and budget.</span>
+      </div>
+      <button class="btn btn-full" onclick="nextStep(3)" data-i="next">Next →</button>
+      <button class="btn-link" onclick="nextStep(3)" data-i="skipForNow">Skip for now</button>
+    </div>
+
+    <!-- PASO 3: Dieta -->
+    <div class="onboard-step" id="step3">
+      <div class="onboard-icon">🥗</div>
+      <h2 class="onboard-title" data-i="step3Title">Dietary preferences</h2>
+      <p class="onboard-sub" data-i="step3Sub">Select all that apply to your family</p>
+      <div class="diet-grid">
+        <button class="diet-btn" data-diet="none" onclick="toggleDiet(this)">🍽️ <span data-i="noRestrictions">No restrictions</span></button>
+        <button class="diet-btn" data-diet="vegetarian" onclick="toggleDiet(this)">🥬 <span data-i="vegetarian">Vegetarian</span></button>
+        <button class="diet-btn" data-diet="vegan" onclick="toggleDiet(this)">🌱 <span data-i="vegan">Vegan</span></button>
+        <button class="diet-btn" data-diet="glutenfree" onclick="toggleDiet(this)">🌾 <span data-i="glutenFree">Gluten free</span></button>
+        <button class="diet-btn" data-diet="lactosefree" onclick="toggleDiet(this)">🥛 <span data-i="lactoseFree">Lactose free</span></button>
+        <button class="diet-btn" data-diet="keto" onclick="toggleDiet(this)">🥩 Keto</button>
+        <button class="diet-btn" data-diet="highprotein" onclick="toggleDiet(this)">💪 <span data-i="highProtein">High protein</span></button>
+        <button class="diet-btn" data-diet="lowsugar" onclick="toggleDiet(this)">🍬 <span data-i="lowSugar">Low sugar</span></button>
+        <button class="diet-btn" data-diet="halal" onclick="toggleDiet(this)">☪️ Halal</button>
+        <button class="diet-btn" data-diet="kosher" onclick="toggleDiet(this)">✡️ Kosher</button>
+      </div>
+      <button class="btn btn-full" onclick="nextStep(4)" data-i="next">Next →</button>
+    </div>
+
+    <!-- PASO 4: Cocinas favoritas -->
+    <div class="onboard-step" id="step4">
+      <div class="onboard-icon">🌍</div>
+      <h2 class="onboard-title" data-i="step4Title">Favorite cuisines</h2>
+      <p class="onboard-sub" data-i="step4Sub">What flavors does your family love?</p>
+      <div class="cuisine-grid">
+        <button class="cuisine-btn" data-cuisine="italian" onclick="toggleCuisine(this)">🇮🇹 Italian</button>
+        <button class="cuisine-btn" data-cuisine="mexican" onclick="toggleCuisine(this)">🇲🇽 Mexican</button>
+        <button class="cuisine-btn" data-cuisine="japanese" onclick="toggleCuisine(this)">🇯🇵 Japanese</button>
+        <button class="cuisine-btn" data-cuisine="chinese" onclick="toggleCuisine(this)">🇨🇳 Chinese</button>
+        <button class="cuisine-btn" data-cuisine="indian" onclick="toggleCuisine(this)">🇮🇳 Indian</button>
+        <button class="cuisine-btn" data-cuisine="mediterranean" onclick="toggleCuisine(this)">🫒 Mediterranean</button>
+        <button class="cuisine-btn" data-cuisine="american" onclick="toggleCuisine(this)">🇺🇸 American</button>
+        <button class="cuisine-btn" data-cuisine="french" onclick="toggleCuisine(this)">🇫🇷 French</button>
+        <button class="cuisine-btn" data-cuisine="thai" onclick="toggleCuisine(this)">🇹🇭 Thai</button>
+        <button class="cuisine-btn" data-cuisine="arabic" onclick="toggleCuisine(this)">🥙 Arabic</button>
+        <button class="cuisine-btn" data-cuisine="korean" onclick="toggleCuisine(this)">🇰🇷 Korean</button>
+        <button class="cuisine-btn" data-cuisine="latin" onclick="toggleCuisine(this)">🌶️ Latin</button>
+      </div>
+      <button class="btn btn-full" onclick="nextStep(5)" data-i="next">Next →</button>
+    </div>
+
+    <!-- PASO 5: Plan -->
+    <div class="onboard-step" id="step5">
+      <div class="onboard-icon">⭐</div>
+      <h2 class="onboard-title" data-i="step5Title">Choose your plan</h2>
+      <p class="onboard-sub" data-i="step5Sub">Start free, upgrade anytime</p>
+      <div class="plan-cards">
+        <div class="plan-card" id="plan-free" onclick="selectPlan('free')">
+          <div class="plan-badge" data-i="free">Free</div>
+          <div class="plan-price">$0<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>✓ <span data-i="feat1Free">10 AI requests/month</span></li>
+            <li>✓ <span data-i="feat2Free">Pantry & fridge tracker</span></li>
+            <li>✓ <span data-i="feat3Free">Shopping list</span></li>
+            <li>✗ <span data-i="feat4Free">Weekly AI menu</span></li>
+            <li>✗ <span data-i="feat5Free">Smart alerts</span></li>
+          </ul>
+          <div class="plan-select-indicator" data-i="selectFree">Select Free</div>
+        </div>
+        <div class="plan-card activo" id="plan-premium" onclick="selectPlan('premium')">
+          <div class="plan-badge premium">Premium ⭐</div>
+          <div class="plan-price">$4.99<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>✓ <span data-i="feat1Premium">Unlimited AI chef</span></li>
+            <li>✓ <span data-i="feat2Premium">Smart pantry alerts</span></li>
+            <li>✓ <span data-i="feat3Premium">Weekly menu planner</span></li>
+            <li>✓ <span data-i="feat4Premium">Budget tracking</span></li>
+            <li>✓ <span data-i="feat5Premium">Guest mode planning</span></li>
+          </ul>
+          <div class="plan-select-indicator">✓ Selected</div>
+        </div>
+      </div>
+      <button class="btn btn-full" onclick="finishOnboarding()" data-i="letsStart">Let's cook! 👨‍🍳</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== APP PRINCIPAL ===== -->
+<div id="screen-app" class="oculto">
+
+  <!-- Banner visible solo en modo demo -->
+  <div class="demo-banner oculto" id="demoBanner">
+    🔑 DEMO MODE — admin@mypersonalchef.app · All Premium features unlocked
+  </div>
+
+  <header>
+    <div class="header-logo" onclick="navegar('home')">
+      <span class="header-chef-emoji">👨‍🍳</span>
+      <span class="brand-sm">My Personal Chef</span>
+    </div>
+    <div class="header-right">
+      <!-- Campana de alertas -->
+      <div class="alert-bell" id="alertBell" onclick="navegar('alerts')" title="Alerts">
+        🔔<span class="alert-badge oculto" id="alertBadge">0</span>
+      </div>
+      <div class="plan-tag" id="headerPlanTag" onclick="abrirModal('modalPremium')">Free</div>
+      <div class="header-avatar" id="headerAvatar" onclick="navegar('profile')">U</div>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <div class="pagina activa" id="pag-home">
+    <div class="home-hero">
+      <h2 id="homeGreeting">Good morning, Chef!</h2>
+      <p id="homeDate"></p>
+    </div>
+
+    <!-- Resumen de presupuesto -->
+    <div class="budget-summary" id="budgetSummary"></div>
+
+    <!-- Alertas activas (si hay) -->
+    <div id="homeAlerts"></div>
+
+    <!-- Sugerencias del día -->
+    <div id="homeSuggestions"></div>
+
+    <section class="home-section">
+      <h3 class="section-title" data-i="quickActions">Quick actions</h3>
+      <div class="quick-grid" id="quickGrid"></div>
+    </section>
+
+    <section class="home-section">
+      <h3 class="section-title" data-i="todayMenu">Today's menu</h3>
+      <div id="todayMenu"></div>
+    </section>
+  </div>
+
+  <!-- CHEF IA (con memoria) -->
+  <div class="pagina pag-chat-flex" id="pag-chef">
+    <div class="chef-header">
+      <div class="chef-avatar-big">👨‍🍳</div>
+      <div class="chef-header-info">
+        <div class="chef-name" data-i="chefName">Chef AI</div>
+        <div class="chef-status" data-i="chefStatus">Knows your family · budget · pantry</div>
+      </div>
+      <select id="aiSelector" class="ai-select">
+        <option value="claude">Claude</option>
+        <option value="openai">GPT-4</option>
+      </select>
+    </div>
+    <div class="chat-body">
+      <div class="chat-mensajes" id="chefMensajes"></div>
+      <div class="chef-suggestions" id="chefSuggestions">
+        <button class="sugg-btn" onclick="sendSuggestion(this)">🤔 What can I cook with what I have?</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">💰 Stay within budget this week</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">🎉 I have guests coming</button>
+        <button class="sugg-btn" onclick="sendSuggestion(this)">📋 Plan my week</button>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chefInput" placeholder="Ask your chef..." onkeydown="if(event.key==='Enter')sendChefMsg()">
+        <button class="btn" onclick="sendChefMsg()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESPENSA + REFRIGERADOR -->
+  <div class="pagina" id="pag-pantry">
+    <div class="sec-header">
+      <h2 data-i="pantry">My Pantry & Fridge</h2>
+      <button class="btn" onclick="abrirModalAddItem()">+ <span data-i="add">Add</span></button>
+    </div>
+
+    <!-- Tabs: Fridge / Pantry / Freezer -->
+    <div class="pantry-tabs">
+      <button class="ptab activo" data-loc="fridge" onclick="setPantryTab(this,'fridge')">🧊 Fridge</button>
+      <button class="ptab" data-loc="pantry" onclick="setPantryTab(this,'pantry')">🥫 Pantry</button>
+      <button class="ptab" data-loc="freezer" onclick="setPantryTab(this,'freezer')">❄️ Freezer</button>
+    </div>
+
+    <!-- Alertas de ingredientes -->
+    <div id="pantryAlerts"></div>
+
+    <!-- Stats -->
+    <div class="pantry-stats" id="pantryStats"></div>
+
+    <!-- Lista de ingredientes -->
+    <div id="pantryList"></div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="pagina" id="pag-alerts">
+    <div class="sec-header"><h2>🔔 <span data-i="alerts">Alerts</span></h2></div>
+    <div id="alertsList"></div>
+  </div>
+
+  <!-- RECETAS -->
+  <div class="pagina" id="pag-recipes">
+    <div class="sec-header">
+      <h2 data-i="recipes">Recipes</h2>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="recipeSearch" placeholder="🔍 Search recipes..." oninput="searchRecipes()">
+    </div>
+    <div class="filter-row">
+      <button class="filter-chip activo" onclick="filterRecipes('all',this)" data-i="all">All</button>
+      <button class="filter-chip" onclick="filterRecipes('breakfast',this)" data-i="breakfast">Breakfast</button>
+      <button class="filter-chip" onclick="filterRecipes('lunch',this)" data-i="lunch">Lunch</button>
+      <button class="filter-chip" onclick="filterRecipes('dinner',this)" data-i="dinner">Dinner</button>
+      <button class="filter-chip" onclick="filterRecipes('snack',this)">Snack</button>
+      <button class="filter-chip" onclick="filterRecipes('quick',this)">⚡ Quick</button>
+      <button class="filter-chip" onclick="filterRecipes('budget',this)">💰 Budget</button>
+      <button class="filter-chip" onclick="filterRecipes('canmake',this)">✅ Can make</button>
+    </div>
+    <div class="recipes-grid" id="recipesGrid"></div>
+  </div>
+
+  <!-- MENÚ SEMANAL -->
+  <div class="pagina" id="pag-menu">
+    <div class="sec-header">
+      <h2 data-i="weeklyMenu">Weekly Menu</h2>
+      <button class="btn" onclick="generateWeeklyMenu()" data-i="generate">✨ AI Generate</button>
+    </div>
+    <!-- Resumen de costo de la semana -->
+    <div id="menuCostSummary"></div>
+    <div id="weeklyMenuContent"></div>
+  </div>
+
+  <!-- LISTA DE COMPRAS -->
+  <div class="pagina" id="pag-shopping">
+    <div class="sec-header">
+      <h2 data-i="shoppingList">Shopping List</h2>
+      <button class="btn" onclick="abrirModalShoppingItem()">+ <span data-i="add">Add</span></button>
+    </div>
+    <div class="shopping-stats" id="shoppingStats"></div>
+    <div id="shoppingList"></div>
+  </div>
+
+  <!-- PERFIL -->
+  <div class="pagina" id="pag-profile">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar">👨‍🍳</div>
+      <div class="profile-name" id="profileName">Chef</div>
+      <div class="profile-plan" id="profilePlan">Free plan</div>
+    </div>
+    <div class="profile-section">
+      <h3 data-i="myBudget">Budget & savings</h3>
+      <div id="profileBudget"></div>
+    </div>
+    <div class="profile-section">
+      <h3 data-i="myPreferences">My preferences</h3>
+      <div id="profilePrefs"></div>
+    </div>
+    <div class="profile-section">
+      <h3 data-i="myPlan">My plan</h3>
+      <div id="profilePlanInfo"></div>
+    </div>
+    <div class="profile-section">
+      <button class="btn btn-gris btn-full" onclick="abrirModalApiKeys()">🔑 <span data-i="apiKeys">Configure AI Keys</span></button>
+      <button class="btn btn-gris btn-full" style="margin-top:8px" onclick="changeLang()">🌍 <span data-i="changeLanguage">Change language</span></button>
+      <button class="btn btn-gris btn-full" style="margin-top:8px" onclick="editarPerfil()">✏️ Edit profile & budget</button>
+      <button class="btn btn-rojo btn-full" style="margin-top:8px" onclick="doLogout()"><span data-i="logout">Sign out</span></button>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <button onclick="navegar('home')"     id="nav-home"     class="nav-activo">🏠<span data-i="nav_home">Home</span></button>
+    <button onclick="navegar('chef')"     id="nav-chef">👨‍🍳<span data-i="nav_chef">Chef AI</span></button>
+    <button onclick="navegar('pantry')"   id="nav-pantry">🧺<span data-i="nav_pantry">Pantry</span></button>
+    <button onclick="navegar('recipes')"  id="nav-recipes">📖<span data-i="nav_recipes">Recipes</span></button>
+    <button onclick="navegar('shopping')" id="nav-shopping">🛒<span data-i="nav_shopping">Shop</span></button>
+    <button onclick="navegar('menu')"     id="nav-menu">📅<span data-i="nav_menu">Menu</span></button>
+  </nav>
+
+</div><!-- /screen-app -->
+
+<!-- ===== MODALES ===== -->
+
+<!-- Modal agregar ingrediente (con niveles de alerta) -->
+<div class="modal-overlay oculto" id="modalAddItem">
+  <div class="modal">
+    <h3 data-i="addIngredient">Add ingredient</h3>
+    <div class="form-group">
+      <label data-i="ingredient">Ingredient name</label>
+      <input type="text" id="itemName" placeholder="e.g. Chicken breast, Milk, Eggs">
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="flex:1">
+        <label data-i="quantity">Current quantity</label>
+        <input type="number" id="itemQty" placeholder="6" min="0" step="0.1">
+      </div>
+      <div class="form-group" style="flex:1">
+        <label data-i="unit">Unit</label>
+        <select id="itemUnit">
+          <option value="units">units</option>
+          <option value="kg">kg</option>
+          <option value="g">g</option>
+          <option value="L">L</option>
+          <option value="ml">ml</option>
+          <option value="cups">cups</option>
+          <option value="tbsp">tbsp</option>
+          <option value="tsp">tsp</option>
+          <option value="lbs">lbs</option>
+          <option value="oz">oz</option>
+          <option value="slices">slices</option>
+          <option value="portions">portions</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>⚠️ <span data-i="alertThreshold">Alert when below (quantity)</span></label>
+      <input type="number" id="itemAlert" placeholder="2" min="0" step="0.1">
+      <div class="form-hint" data-i="alertHint">You'll get notified when this ingredient runs low</div>
+    </div>
+    <div class="form-group">
+      <label data-i="location">Location</label>
+      <select id="itemLocation">
+        <option value="fridge">🧊 Fridge</option>
+        <option value="pantry">🥫 Pantry</option>
+        <option value="freezer">❄️ Freezer</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-i="category">Category</label>
+      <select id="itemCategory">
+        <option value="protein">🥩 Protein (meat, fish, eggs)</option>
+        <option value="dairy">🥛 Dairy</option>
+        <option value="vegetable">🥦 Vegetables</option>
+        <option value="fruit">🍎 Fruits</option>
+        <option value="grain">🌾 Grains & carbs</option>
+        <option value="condiment">🧂 Condiments & spices</option>
+        <option value="beverage">🥤 Beverages</option>
+        <option value="snack">🍪 Snacks</option>
+        <option value="frozen">🧊 Frozen</option>
+        <option value="other">📦 Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-i="expiryDate">Expiry date (optional)</label>
+      <input type="date" id="itemExpiry">
+    </div>
+    <div class="form-group">
+      <label data-i="approxPrice">Approx. price paid ($)</label>
+      <input type="number" id="itemPrice" placeholder="0.00" min="0" step="0.01">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalAddItem')" data-i="cancel">Cancel</button>
+      <button class="btn" onclick="saveItem()" data-i="save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal detalle receta -->
+<div class="modal-overlay oculto" id="modalRecipe">
+  <div class="modal modal-large">
+    <div id="modalRecipeContent"></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalRecipe')" data-i="close">Close</button>
+      <button class="btn" onclick="addRecipeToMenu()" data-i="addToMenu">Add to menu</button>
+      <button class="btn btn-amarillo" onclick="addRecipeToShopping()" data-i="addToShopping">🛒 Shopping list</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal shopping item -->
+<div class="modal-overlay oculto" id="modalShopping">
+  <div class="modal">
+    <h3 data-i="addItem">Add item</h3>
+    <div class="form-group"><label data-i="item">Item</label><input type="text" id="shoppingName" placeholder="e.g. Tomatoes"></div>
+    <div class="form-group"><label data-i="quantity">Quantity</label><input type="text" id="shoppingQty" placeholder="e.g. 1 kg"></div>
+    <div class="form-group"><label data-i="estimatedPrice">Estimated price ($)</label><input type="number" id="shoppingPrice" placeholder="0.00" min="0" step="0.01"></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalShopping')" data-i="cancel">Cancel</button>
+      <button class="btn" onclick="saveShoppingItem()" data-i="save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal API Keys -->
+<div class="modal-overlay oculto" id="modalApiKeys">
+  <div class="modal">
+    <h3>🔑 AI Configuration</h3>
+    <p style="color:#888;font-size:13px;margin-bottom:16px">Keys are saved only on your device.</p>
+    <div class="form-group">
+      <label>Anthropic (Claude) API Key</label>
+      <div class="pass-wrap"><input type="password" id="claudeKeyInput" placeholder="sk-ant-..."><button class="toggle-pass" onclick="togglePass('claudeKeyInput',this)" type="button">👁</button></div>
+    </div>
+    <div class="form-group">
+      <label>OpenAI (GPT-4) API Key</label>
+      <div class="pass-wrap"><input type="password" id="openaiKeyInput" placeholder="sk-..."><button class="toggle-pass" onclick="togglePass('openaiKeyInput',this)" type="button">👁</button></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalApiKeys')" data-i="cancel">Cancel</button>
+      <button class="btn" onclick="saveApiKeys()">Save keys</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal editar perfil -->
+<div class="modal-overlay oculto" id="modalEditProfile">
+  <div class="modal">
+    <h3>✏️ Edit profile</h3>
+    <div class="form-group"><label>Your name</label><input type="text" id="ep_name"></div>
+    <div class="form-group"><label>Adults in family</label>
+      <div class="counter-wrap"><button class="counter-btn" onclick="changeEditCount('adults',-1)">−</button><span id="ep_adults">2</span><button class="counter-btn" onclick="changeEditCount('adults',1)">+</button></div>
+    </div>
+    <div class="form-group"><label>Children</label>
+      <div class="counter-wrap"><button class="counter-btn" onclick="changeEditCount('children',-1)">−</button><span id="ep_children">0</span><button class="counter-btn" onclick="changeEditCount('children',1)">+</button></div>
+    </div>
+    <div class="form-group"><label>Weekly budget ($)</label><input type="number" id="ep_budget"></div>
+    <div class="form-group"><label>Savings goal per week ($)</label><input type="number" id="ep_savings"></div>
+    <div class="form-group"><label>Budget per meal ($)</label><input type="number" id="ep_mealbudget"></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalEditProfile')">Cancel</button>
+      <button class="btn" onclick="saveEditProfile()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Premium -->
+<div class="modal-overlay oculto" id="modalPremium">
+  <div class="modal">
+    <div style="text-align:center;padding:10px 0 20px">
+      <div style="font-size:48px">⭐</div>
+      <h3 style="font-size:22px;margin-top:10px" data-i="upgradePremium">Upgrade to Premium</h3>
+      <p style="color:#888;font-size:14px;margin-top:8px">Unlock unlimited AI chef, smart alerts, weekly menus and budget tracking.</p>
+      <div style="font-size:36px;font-weight:700;color:var(--gold);margin:16px 0">$4.99<span style="font-size:16px;color:#888">/month</span></div>
+    </div>
+    <div class="upgrade-features">
+      <div class="upgrade-feat">✓ Unlimited AI Chef conversations</div>
+      <div class="upgrade-feat">✓ Smart pantry & fridge alerts</div>
+      <div class="upgrade-feat">✓ AI-generated weekly menus</div>
+      <div class="upgrade-feat">✓ Full budget tracking & savings</div>
+      <div class="upgrade-feat">✓ Guest mode meal planning</div>
+    </div>
+    <div class="modal-btns" style="flex-direction:column;gap:8px">
+      <button class="btn btn-full btn-gold" onclick="processPremium()">Start Premium — $4.99/mo</button>
+      <button class="btn-link" onclick="cerrarModal('modalPremium')">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
